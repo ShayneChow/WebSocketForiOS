@@ -35,6 +35,8 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.showBox addGestureRecognizer:tgr];
     self.sendBtn.layer.cornerRadius = 5;
+    
+    [self.messageTextField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -71,6 +73,7 @@
     [_webSocket send:_messageTextField.text];
     _showBox.text = [NSString stringWithFormat:@"%@\n%@", _showBox.text, _messageTextField.text];
     _messageTextField.text = nil;
+    [self.messageTextField becomeFirstResponder];
 }
 
 #pragma mark - SRWebSocketDelegate
@@ -90,6 +93,14 @@
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
     NSLog(@"Received \"%@\"", message);
     _showBox.text = [NSString stringWithFormat:@"%@\n%@", _showBox.text, message];
+    // 字符串转json，json转字典。
+    NSData *resData = [[NSData alloc] initWithData:[message dataUsingEncoding:NSUTF8StringEncoding]];
+    NSDictionary *tempDict = [NSDictionary dictionary];
+    tempDict = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];  //解析
+    NSLog(@"%@", tempDict);
+    if ([tempDict[@"route"] isEqualToString:@"SCAN"]) {
+        NSLog(@"%@ 成功！", tempDict[@"route"]);
+    }
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
