@@ -24,7 +24,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _showBox.text = @"waiting for connection";
     
     [self reconnect:nil];
 }
@@ -71,7 +70,7 @@
     [self hideKeyboard];
     [_webSocket sendPing:nil];
     [_webSocket send:_messageTextField.text];
-    _showBox.text = [NSString stringWithFormat:@"%@\n%@", _showBox.text, _messageTextField.text];
+    _showBox.text = [NSString stringWithFormat:@"%@\n发送消息：%@\n", _showBox.text, _messageTextField.text];
     _messageTextField.text = nil;
     [self.messageTextField becomeFirstResponder];
 }
@@ -92,7 +91,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
     NSLog(@"Received \"%@\"", message);
-    _showBox.text = [NSString stringWithFormat:@"%@\n%@", _showBox.text, message];
+    
     // 字符串转json，json转字典。
     NSData *resData = [[NSData alloc] initWithData:[message dataUsingEncoding:NSUTF8StringEncoding]];
     NSDictionary *tempDict = [NSDictionary dictionary];
@@ -101,6 +100,9 @@
     if ([tempDict[@"route"] isEqualToString:@"SCAN"]) {
         NSLog(@"%@ 成功！", tempDict[@"route"]);
     }
+    
+    _showBox.text = [NSString stringWithFormat:@"%@\n服务器返回：\n%@\n", _showBox.text, tempDict];
+    
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
