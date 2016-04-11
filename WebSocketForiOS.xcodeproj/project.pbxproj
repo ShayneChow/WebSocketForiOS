@@ -234,6 +234,7 @@
 				TargetAttributes = {
 					F04432F51CB903E70048DB1E = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 3G4H5W6D7F;
 					};
 					F044330E1CB903E80048DB1E = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -487,6 +488,7 @@
 			baseConfigurationReference = 74BF42AA6D185F20420F1F8C /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = WebSocketForiOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.shaynechow.WebSocketForiOS;
@@ -499,6 +501,7 @@
 			baseConfigurationReference = BC2E84CEED83B7A13F85EC61 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = WebSocketForiOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.shaynechow.WebSocketForiOS;

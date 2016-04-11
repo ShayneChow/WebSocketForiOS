@@ -26,6 +26,8 @@
     [super viewWillAppear:animated];
     
     [self reconnect:nil];
+    
+    [self registerForKeyboardNotifications];
 }
 
 - (void)viewDidLoad {
@@ -34,13 +36,24 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.showBox addGestureRecognizer:tgr];
     self.sendBtn.layer.cornerRadius = 5;
-    
-    [self.messageTextField becomeFirstResponder];
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
 - (void)hideKeyboard {
@@ -67,12 +80,38 @@
 }
 
 - (IBAction)sendMessage:(id)sender {
-    [self hideKeyboard];
-    [_webSocket sendPing:nil];
-    [_webSocket send:_messageTextField.text];
-    _showBox.text = [NSString stringWithFormat:@"%@\n发送消息：%@\n", _showBox.text, _messageTextField.text];
+
+    NSDictionary *tempDict = @{
+        @"route": @"SCAN",
+        @"payload": @{
+            @"adjust_amount": @"adjust_amount",
+            @"auth_code": @"auth_code",
+            @"discount_amount": @"discount_amount",
+            @"payment_channel": @"payment_channel",
+            @"total_amount": @"total_amount",
+            @"orders": @[@"1",@"2",@"3"]
+        }
+    };
+    
+    NSString *str = [self dictionaryToJson:tempDict];
+    
+    [_webSocket send:str];
+    _showBox.text = [NSString stringWithFormat:@"%@\n发送消息：%@\n", _showBox.text, str];
     _messageTextField.text = nil;
     [self.messageTextField becomeFirstResponder];
+}
+
+- (NSString *)dictionaryToJson:(NSDictionary *)dic {
+    
+    NSError *err = nil;
+    // options:  NSJSONWritingPrettyPrinted  是有换位符的, 是nil的话 返回的数据是没有换位符的.
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:0 error:&err];
+    
+    if(err) {
+        NSLog(@"字典转json字符串失败：%@",err);
+    }
+    
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark - SRWebSocketDelegate
@@ -91,11 +130,16 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
     NSLog(@"Received \"%@\"", message);
-    
+    NSError *err;
     // 字符串转json，json转字典。
     NSData *resData = [[NSData alloc] initWithData:[message dataUsingEncoding:NSUTF8StringEncoding]];
     NSDictionary *tempDict = [NSDictionary dictionary];
-    tempDict = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];  //解析
+    tempDict = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:&err];  //解析
+    
+    if(err) {
+        NSLog(@"json解析失败：%@",err);
+    }
+    
     NSLog(@"%@", tempDict);
     if ([tempDict[@"route"] isEqualToString:@"SCAN"]) {
         NSLog(@"%@ 成功！", tempDict[@"route"]);
@@ -114,5 +158,38 @@
 - (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload {
     NSLog(@"Websocket received pong");
 }
+
+#pragma mark - keyboard events -
+
+// 键盘显示事件
+- (void)keyboardWillShow:(NSNotification *)notification {
+    //获取键盘高度，在不同设备上，以及中英文下是不同的
+    CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    CGFloat INTERVAL_KEYBOARD = 0;
+    //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
+    CGFloat offset = (_contentView.frame.origin.y + _contentView.frame.size.height+INTERVAL_KEYBOARD) - (self.view.frame.size.height - kbHeight);
+    
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    NSLog(@"kbHeight: %f, offset: %f, duration:%f", kbHeight, offset, duration);
+    //将视图上移计算好的偏移
+    if(offset > 0) {
+        [UIView animateWithDuration:duration animations:^{
+            self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+        }];
+    }
+}
+
+// 键盘消失事件
+- (void)keyboardWillHide:(NSNotification *)notify {
+    // 键盘动画时间
+    double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    //视图下沉恢复原状
+    [UIView animateWithDuration:duration animations:^{
+        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    }];
+}
+
 
 @end
