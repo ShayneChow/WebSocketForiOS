@@ -1,3 +1,4 @@
-platform :ios, "7.0"
+platform :ios, '8.0'
 
-pod "SocketRocket"
+pod 'SocketRocket'
+pod 'AFNetworking', '~> 3.0'

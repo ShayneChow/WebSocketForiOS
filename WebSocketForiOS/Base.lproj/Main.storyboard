@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -15,7 +16,8 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="sRo-mi-Up5"/>
+                        <segue destination="gwM-Ns-n2h" kind="relationship" relationship="rootViewController" id="wte-N7-hgu"/>
+                        <segue destination="BYZ-38-t0r" kind="push" id="fKc-wR-ndr"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rpg-h1-8GN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -25,7 +27,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="viewController" id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -89,12 +91,20 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zT5-n2-9Bs">
-                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="T4Y-FY-erK">
-                            <color key="tintColor" red="0.95686274510000002" green="0.34901960780000002" blue="0.050980392159999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="stopConnect:" destination="BYZ-38-t0r" id="FKt-Di-LXD"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="stop" id="T4Y-FY-erK">
+                                <color key="tintColor" red="0.95686274510000002" green="0.34901960780000002" blue="0.050980392159999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="stopConnect:" destination="BYZ-38-t0r" id="FKt-Di-LXD"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Back" id="so4-qY-9gD">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="back:" destination="BYZ-38-t0r" id="Lpe-qf-umv"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="ZjJ-tw-ld9">
                             <color key="tintColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -113,6 +123,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="304.5" y="429.5"/>
+        </scene>
+        <!--Test View Controller-->
+        <scene sceneID="WmC-C1-NvW">
+            <objects>
+                <viewController id="gwM-Ns-n2h" customClass="TestViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YWj-ox-TZb"/>
+                        <viewControllerLayoutGuide type="bottom" id="AaI-xB-tga"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tNg-89-3wo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdE-3Y-tgb">
+                                <rect key="frame" x="164" y="319" width="46" height="30"/>
+                                <state key="normal" title="PUSH"/>
+                                <connections>
+                                    <action selector="push:" destination="gwM-Ns-n2h" eventType="touchUpInside" id="wUL-FV-er0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZPY-Zb-6OX">
+                                <rect key="frame" x="127" y="376" width="121" height="30"/>
+                                <state key="normal" title="SEND MESSAGE"/>
+                                <connections>
+                                    <action selector="sendMessage:" destination="gwM-Ns-n2h" eventType="touchUpInside" id="xos-Rq-2QR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qY3-WW-tH5"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mCg-Ji-WPP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="800.5" y="429.5"/>
         </scene>
     </scenes>
 </document>
