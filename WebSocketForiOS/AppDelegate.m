@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "ZXSocketManager.h"
 
-@interface AppDelegate ()<SRWebSocketDelegate>
+@interface AppDelegate ()
 
 @end
 
@@ -17,24 +17,26 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-//    NSURL *url=[NSURL URLWithString:@"http://www.baidu.com"];
-//    [[ZXSocketManager sharedSocket] initWithURL:url].delegate = self;
-    static NSString * url;
-    NSString *client = @"ios";
-    NSString *clientId = @"129844438158540802";
-    NSString *token = @"o6l2i8tpoDK_XO5wM8RB8jTnS1uk2MZ18MlQ0Bo2gOa93unP2QZeUs5siqB6Wo1Z";
-    NSString *sign = @"cYQ4h1bnFVIBcoKXOfcCXpZRvHWicpg9cyeWKuvKUBQ=";
     
-    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[NSDate date] timeIntervalSince1970]];
-    NSLog(@"timeSp:%@",timeSp); //时间戳的值
-    NSString *time = timeSp;
+    [[ZXSocketManager shareManager] zx_close:^(NSInteger code, NSString *reason, BOOL wasClean) {
+        NSLog(@"code: %li", (long)code);
+        NSLog(@"reason: %@", reason);
+        NSLog(@"wasClean: %i", wasClean);
+    }];
     
-    url = [NSString stringWithFormat:@"ws://ali.weplus.cn:6625?client=%@&token=%@&sign=%@&time=%@&clientId=%@", client, token, sign, time, clientId];
-//    [ZXSocketManager sharedSocket] = [[SRWebSocket alloc] initWithURLRequest:[NSURL URLWithString:url]];
-    _appSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
-    _appSocket.delegate = self;
-    [_appSocket open];
+    NSString *url = @"ws://echo.websocket.org";
+    [[ZXSocketManager shareManager] zx_open:url connect:^{
+        NSLog(@"AppDelegate 成功连接");
+    } receive:^(id message, ZXSocketReceiveType type) {
+        if (type == ZXSocketReceiveTypeForMessage) {
+            NSLog(@"接收 类型1--%@",message);
+        }
+        else if (type == ZXSocketReceiveTypeForPong){
+            NSLog(@"接收 类型2--%@",message);
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"AppDelegate连接失败");
+    }];
     
     [NSTimer scheduledTimerWithTimeInterval:10
                                      target:self
@@ -64,17 +66,6 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-#pragma mark - SRWebSocketDelegate
-
-- (void)webSocketDidOpen:(SRWebSocket *)webSocket {
-    
-    [_appSocket sendPing:nil];
-//    [NSTimer scheduledTimerWithTimeInterval:10
-//                                     target:self
-//                                   selector:@selector(heartBeat)
-//                                   userInfo:nil repeats:YES];
-}
-
 - (void)heartBeat {
     NSLog(@"=========== Heart Beat ============");
     NSDictionary *tempDict = @{
@@ -83,7 +74,7 @@
                                };
     
     NSString *str = [self dictionaryToJson:tempDict];
-    [_appSocket send:str];
+    [[ZXSocketManager shareManager] zx_send:str];
 }
 
 - (NSString *)dictionaryToJson:(NSDictionary *)dic {
@@ -97,40 +88,6 @@
     }
     
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
-    NSLog(@"===AppDelegate Websocket Failed With Error %@", error);
-    
-    [_appSocket close];
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
-    NSLog(@"====AppDelegate Received \"%@\"", message);
-    NSError *err;
-    // 字符串转json，json转字典。
-    NSData *resData = [[NSData alloc] initWithData:[message dataUsingEncoding:NSUTF8StringEncoding]];
-    NSDictionary *tempDict = [NSDictionary dictionary];
-    tempDict = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:&err];  //解析
-    
-    if(err) {
-        NSLog(@"json解析失败：%@",err);
-    }
-    
-    //NSLog(@"%@", tempDict);
-    if ([tempDict[@"route"] isEqualToString:@"SCAN"]) {
-        NSLog(@"==== AppDelegate %@ 成功！", tempDict[@"route"]);
-    }
-    
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    NSLog(@"==== WebSocket closed");
-    [_appSocket close];
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload {
-    NSLog(@"AppDelegate  ===  Websocket received pong");
 }
 
 @end

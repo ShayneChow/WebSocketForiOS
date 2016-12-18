@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8CD8DC2B139F3936B19AE91B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A051D1FBA0EE0382F00F01EB /* libPods.a */; };
+		F03EBAC41E05657900C9DDD3 /* ZXSocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EBAC31E05657900C9DDD3 /* ZXSocketManager.m */; };
 		F04432FB1CB903E70048DB1E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F04432FA1CB903E70048DB1E /* main.m */; };
 		F04432FE1CB903E70048DB1E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F04432FD1CB903E70048DB1E /* AppDelegate.m */; };
 		F04433011CB903E70048DB1E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F04433001CB903E70048DB1E /* ViewController.m */; };
@@ -16,7 +17,6 @@
 		F04433091CB903E80048DB1E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F04433071CB903E80048DB1E /* LaunchScreen.storyboard */; };
 		F04433141CB903E80048DB1E /* WebSocketForiOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F04433131CB903E80048DB1E /* WebSocketForiOSTests.m */; };
 		F044331F1CB903E80048DB1E /* WebSocketForiOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F044331E1CB903E80048DB1E /* WebSocketForiOSUITests.m */; };
-		F0B89C111CCFB4DA003A822C /* ZXSocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B89C101CCFB4DA003A822C /* ZXSocketManager.m */; };
 		F0B89C141CCFC27B003A822C /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B89C131CCFC27B003A822C /* TestViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +41,8 @@
 		74BF42AA6D185F20420F1F8C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A051D1FBA0EE0382F00F01EB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2E84CEED83B7A13F85EC61 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		F03EBAC21E05657900C9DDD3 /* ZXSocketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXSocketManager.h; sourceTree = "<group>"; };
+		F03EBAC31E05657900C9DDD3 /* ZXSocketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXSocketManager.m; sourceTree = "<group>"; };
 		F04432F61CB903E70048DB1E /* WebSocketForiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketForiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F04432FA1CB903E70048DB1E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F04432FC1CB903E70048DB1E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -57,8 +59,6 @@
 		F044331A1CB903E80048DB1E /* WebSocketForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebSocketForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F044331E1CB903E80048DB1E /* WebSocketForiOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebSocketForiOSUITests.m; sourceTree = "<group>"; };
 		F04433201CB903E80048DB1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F0B89C0F1CCFB4DA003A822C /* ZXSocketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXSocketManager.h; sourceTree = "<group>"; };
-		F0B89C101CCFB4DA003A822C /* ZXSocketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXSocketManager.m; sourceTree = "<group>"; };
 		F0B89C121CCFC27B003A822C /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		F0B89C131CCFC27B003A822C /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,8 +135,8 @@
 				F04432FD1CB903E70048DB1E /* AppDelegate.m */,
 				F04432FF1CB903E70048DB1E /* ViewController.h */,
 				F04433001CB903E70048DB1E /* ViewController.m */,
-				F0B89C0F1CCFB4DA003A822C /* ZXSocketManager.h */,
-				F0B89C101CCFB4DA003A822C /* ZXSocketManager.m */,
+				F03EBAC21E05657900C9DDD3 /* ZXSocketManager.h */,
+				F03EBAC31E05657900C9DDD3 /* ZXSocketManager.m */,
 				F0B89C121CCFC27B003A822C /* TestViewController.h */,
 				F0B89C131CCFC27B003A822C /* TestViewController.m */,
 				F04433021CB903E70048DB1E /* Main.storyboard */,
@@ -239,7 +239,7 @@
 		F04432EE1CB903E70048DB1E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "周想";
 				TargetAttributes = {
 					F04432F51CB903E70048DB1E = {
@@ -358,7 +358,7 @@
 			files = (
 				F04433011CB903E70048DB1E /* ViewController.m in Sources */,
 				F04432FE1CB903E70048DB1E /* AppDelegate.m in Sources */,
-				F0B89C111CCFB4DA003A822C /* ZXSocketManager.m in Sources */,
+				F03EBAC41E05657900C9DDD3 /* ZXSocketManager.m in Sources */,
 				F04432FB1CB903E70048DB1E /* main.m in Sources */,
 				F0B89C141CCFC27B003A822C /* TestViewController.m in Sources */,
 			);
@@ -428,8 +428,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -471,8 +473,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
